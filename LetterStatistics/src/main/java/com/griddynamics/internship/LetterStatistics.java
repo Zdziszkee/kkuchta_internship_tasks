@@ -10,14 +10,15 @@ import java.util.Map;
 
 public class LetterStatistics {
     public static void main(String[] args) {
-        if (args.length != 1) {
-            System.out.println("You need to provide target txt file path as program argument!");
-            return;
+        if (args.length == 0) {
+            System.out.println("You did not provide path for file so sample file will be used instead.");
         }
+        final String file = args.length == 0 ? "test.txt" : args[0];
+        final Path textFile = Paths.get(file);
 
-        final Path textFile = Paths.get(args[0]);
-
-        if (!textFile.getFileName().toString().endsWith(".txt")) {
+        if (!textFile.getFileName()
+                     .toString()
+                     .endsWith(".txt")) {
             System.out.println("This file is not a txt file!");
             return;
         }
