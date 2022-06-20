@@ -27,7 +27,8 @@ public class LetterStatistics {
             final List<String> lines = Files.readAllLines(textFile);
             final Map<Character, Integer> characterCountMap = new HashMap<>();
             for (String line : lines) {
-                for (char character : line.toCharArray()) {
+                String formattedLine = line.toLowerCase();
+                for (char character : formattedLine.toCharArray()) {
                     if (!Character.isAlphabetic(character)) {
                         continue;
                     }
