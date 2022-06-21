@@ -1,68 +1,58 @@
 package com.griddynamics.internship;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
+import com.griddynamics.internship.api.*;
+import com.griddynamics.internship.base.*;
+import com.griddynamics.internship.base.exceptions.DefaultFileNotFoundException;
+import com.griddynamics.internship.base.exceptions.WrongFileFormatException;
+
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public class LetterStatistics {
-    public static void main(String[] args) {
-        if (args.length == 0) {
-            System.out.println("You did not provide path for file so sample file will be used instead.");
-        }
+    private final FileLoader fileLoader;
+    private final CharacterPrinter characterPrinter;
+    private final FileReader fileReader;
+    private final InputSorter inputSorter;
+    private final LetterCounter letterCounter;
 
-        ClassLoader loader = Thread.currentThread()
-                                   .getContextClassLoader();
-        URL defaultFileURL = loader.getResource("test.txt");
-
-        if (defaultFileURL == null) {
-            System.out.println("Default txt file could not be find!");
-            return;
-        }
-        final String file = args.length == 0 ? defaultFileURL.getPath() : args[0];
-
-
-        final Path textFile = Paths.get(file);
-
-        if (!textFile.getFileName()
-                     .toString()
-                     .endsWith(".txt")) {
-            System.out.println("This file is not a txt file!");
-            return;
-        }
-
-        try {
-            final List<String> lines = Files.readAllLines(textFile);
-            final Map<Character, Integer> characterCountMap = new LinkedHashMap<>();
-            for (String line : lines) {
-                String formattedLine = line.toLowerCase();
-                for (char character : formattedLine.toCharArray()) {
-                    if (!Character.isAlphabetic(character)) {
-                        continue;
-                    }
-                    characterCountMap.merge(character, 1, Integer::sum);
-                }
-            }
-            characterCountMap.entrySet()
-                             .stream()
-                             .sorted((first, second) -> {
-                                 Integer firstValue = first.getValue();
-                                 Integer secondValue = second.getValue();
-                                 if (firstValue < secondValue) {
-                                     return 1;
-                                 } else if (firstValue.equals(secondValue)) {
-                                     return 0;
-                                 }
-                                 return -1;
-                             }).limit(10).forEach((entry) -> System.out.println(entry.getValue() + ": " + entry.getKey()));
-
-        }
-        catch (IOException e) {
-            System.out.println("Error occurred while trying to read the file!");
-        }
+    public LetterStatistics(FileLoader fileLoader, CharacterPrinter characterPrinter, FileReader fileReader, InputSorter inputSorter,
+                            LetterCounter letterCounter) {
+        this.fileLoader = fileLoader;
+        this.characterPrinter = characterPrinter;
+        this.fileReader = fileReader;
+        this.inputSorter = inputSorter;
+        this.letterCounter = letterCounter;
     }
+
+    public static void main(String[] args) {
+        LetterStatistics letterStatistics = new LetterStatistics(new DefaultFileLoader(),
+                                                                 new DefaultCharacterPrinter(),
+                                                                 new DefaultFileReader(),
+                                                                 new DefaultInputSorter(),
+                                                                 new DefaultLetterCounter());
+
+        letterStatistics.run(args);
+
+
+    }
+
+    public void run(String[] args) {
+        String path = args.length >= 1 ? args[0] : "";
+        try {
+            Path file = fileLoader.loadFile(path);
+            List<String> lines = fileReader.read(file);
+            Map<Character, Integer> characterCount = letterCounter.count(lines);
+            Map<Character, Integer> sortedCharacterCount = inputSorter.sort(characterCount);
+            characterPrinter.print(sortedCharacterCount, 10);
+        }
+        catch (DefaultFileNotFoundException exception) {
+            System.out.println("Default file could not be found!");
+        }
+        catch (WrongFileFormatException exception) {
+            System.out.println("Given file is not txt file!");
+        }
+
+    }
+
 }
