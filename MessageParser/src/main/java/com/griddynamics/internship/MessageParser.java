@@ -26,9 +26,6 @@ public class MessageParser {
     }
 
     public static void main(String[] args) {
-        if (args.length == 0) {
-            System.out.println("You did not provide path for file so sample file will be used instead.");
-        }
         final String path = (args.length == 0) ? "" : args[0];
         MessageParser messageParser = new MessageParser(new DefaultFileLoader(), new DefaultFileReader(new DefaultFileValidator()),
                 new DefaultInputFormatter());

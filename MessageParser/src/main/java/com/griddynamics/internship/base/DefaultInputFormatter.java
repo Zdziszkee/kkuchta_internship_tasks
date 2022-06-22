@@ -28,10 +28,19 @@ public class DefaultInputFormatter implements InputFormatter {
         final List<String> spaces = new ArrayList<>(Arrays.stream(SPACE_REGEX.split(sentence, 0))
                                                           .toList());
 
+        final List<String> stringSequence = new ArrayList<>();
+
+        for (int i = 0; i < spaces.size(); i++) {
+            String space = spaces.get(i);
+            String word = words.get(i);
+            stringSequence.add(space);
+            stringSequence.add(word);
+        }
+
         List<String> formattedLines = new ArrayList<>();
 
-        while (spaces.size() != 0) {
-            formattedLines.add(buildSentence(words, spaces, maxLineSize));
+        while (stringSequence.size() > 0) {
+            formattedLines.add(buildSentence(stringSequence, maxLineSize));
         }
 
 
@@ -39,43 +48,31 @@ public class DefaultInputFormatter implements InputFormatter {
 
     }
 
-    private String buildSentence(List<String> words, List<String> spaces, int maxLineSize) {
+    private String buildSentence(List<String> stringSequence, int maxLineSize) {
         final StringBuilder stringBuilder = new StringBuilder();
-        final List<String> wordsToRemove = new ArrayList<>();
-        final List<String> spacesToRemove = new ArrayList<>();
 
-        for (int i = 0; i < spaces.size(); i++) {
-            if (stringBuilder.toString()
-                             .length() >= maxLineSize) {
-                break;
-            }
-            String space = spaces.get(i);
-            spacesToRemove.add(space);
+        final Iterator<String> stringIterator = stringSequence.iterator();
 
-            String word = "";
-            if (words.size() > i) {
-                word = words.get(i);
-                wordsToRemove.add(word);
-            }
-            stringBuilder.append(space)
-                         .append(word);
+        while (stringIterator.hasNext()) {
+            final String nextString = stringIterator.next();
+
+            int index = stringSequence.indexOf(nextString);
+            int remainingSpace = maxLineSize - stringBuilder.length();
+            int length = nextString.length();
+
+            if (nextString.length() <= remainingSpace) {
+                stringBuilder.append(nextString);
+                stringIterator.remove();
+            } else if (nextString.isBlank()) {
+                int toCut = length - remainingSpace;
+                String substring = nextString.substring(length - toCut + 1);
+                stringSequence.set(index, substring);
+                stringBuilder.append(nextString.substring(0, length - toCut + 1));
+            }else break;
+
         }
-        final Iterator<String> wordsIterator = words.iterator();
-        while (wordsIterator.hasNext()) {
-            final String nextWord = wordsIterator.next();
-            if (wordsToRemove.contains(nextWord)) {
-                wordsIterator.remove();
-                wordsToRemove.remove(nextWord);
-            }
-        }
-        final Iterator<String> spacesIterator = spaces.iterator();
-        while (spacesIterator.hasNext()) {
-            final String nextWord = spacesIterator.next();
-            if (spacesToRemove.contains(nextWord)) {
-                spacesIterator.remove();
-                spacesToRemove.remove(nextWord);
-            }
-        }
+
+
         return stringBuilder.toString();
     }
 }
