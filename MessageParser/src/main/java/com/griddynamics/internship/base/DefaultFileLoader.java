@@ -23,7 +23,7 @@ public class DefaultFileLoader implements FileLoader {
             System.out.println("Default txt file could not be find!");
             throw new DefaultFileNotFoundException();
         }
-        final String file = path == null || path.isEmpty() ? defaultFileURL.getPath() : path;
+        final String file = (path == null || path.isEmpty()) ? defaultFileURL.getPath() : path;
 
 
         return Paths.get(file);

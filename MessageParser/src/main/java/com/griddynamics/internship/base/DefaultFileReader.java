@@ -7,7 +7,7 @@ import com.griddynamics.internship.base.exceptions.WrongFileFormatException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultFileReader implements FileReader {
@@ -19,17 +19,17 @@ public class DefaultFileReader implements FileReader {
 
     @Override
     public List<String> read(Path path) throws WrongFileFormatException {
+        List<String> lines = new ArrayList<>();
         try {
-            List<String> lines = Files.readAllLines(path);
-            if (!fileValidator.isValid(path,lines)) {
-                System.out.println("File validation failed!");
-                throw new WrongFileFormatException();
-            }
-            return lines;
+            lines.addAll(Files.readAllLines(path));
         }
         catch (IOException exception) {
             System.out.println("Error occurred while trying to read lines from file.");
         }
-        return Collections.emptyList();
+        if (!fileValidator.isValid(path, lines)) {
+            System.out.println("File validation failed!");
+            throw new WrongFileFormatException();
+        }
+        return lines;
     }
 }
