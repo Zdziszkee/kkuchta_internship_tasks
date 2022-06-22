@@ -1,4 +1,4 @@
-package com.griddynamics.internship;
+package com.griddynamics.internship.base.exceptions;
 
 public class WordTooLongException extends RuntimeException {
     public WordTooLongException() {
