@@ -33,15 +33,14 @@ public class MessageParser {
                 final int number = Integer.parseInt(lines.get(1));
                 final String sentence = lines.get(0);
 
-                List<String> words = Arrays.stream(sentence.split(" "))
-                                           .map(word -> word.replaceAll(" ", ""))
-                                           .toList();
+                final List<String> words = Arrays.stream(sentence.split("\\S")).toList();
 
                 for (String word : words) {
                     if (word.length() > number){
                         throw new WordTooLongException();
                     }
                 }
+                final List<String> spaces = Arrays.stream(sentence.split("\\s")).toList();
 
 
 
