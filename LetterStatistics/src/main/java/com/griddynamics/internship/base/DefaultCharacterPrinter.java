@@ -11,15 +11,8 @@ public class DefaultCharacterPrinter implements CharacterPrinter {
     public void print(Map<Character, Integer> characterCountMap, int limit) {
         characterCountMap.entrySet()
                          .stream()
-                         .sorted((first, second) -> {
-                             Integer firstValue = first.getValue();
-                             Integer secondValue = second.getValue();
-                             if (firstValue < secondValue) {
-                                 return 1;
-                             } else if (firstValue.equals(secondValue)) {
-                                 return 0;
-                             }
-                             return -1;
-                         }).limit(10).forEach((entry) -> System.out.println(entry.getValue() + ": " + entry.getKey()));
+                         .sorted(Map.Entry.comparingByValue())
+                         .limit(limit)
+                         .forEach((entry) -> System.out.println(entry.getValue() + ": " + entry.getKey()));
     }
 }
