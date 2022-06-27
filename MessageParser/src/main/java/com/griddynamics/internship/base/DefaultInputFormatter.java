@@ -16,8 +16,7 @@ public class DefaultInputFormatter implements InputFormatter {
     @Override
     public List<String> format(String sentence, int maxLineSize) {
 
-        final List<String> words = new ArrayList<>(Arrays.stream(WORD_REGEX.split(sentence, 0))
-                                                         .toList());
+        final List<String> words = Arrays.asList(WORD_REGEX.split(sentence, 0));
 
         for (String word : words) {
             if (word.length() > maxLineSize) {
@@ -25,8 +24,7 @@ public class DefaultInputFormatter implements InputFormatter {
             }
         }
 
-        final List<String> spaces = new ArrayList<>(Arrays.stream(SPACE_REGEX.split(sentence, 0))
-                                                          .toList());
+        final List<String> spaces = Arrays.asList(SPACE_REGEX.split(sentence, 0));
 
         final List<String> stringSequence = new ArrayList<>();
 

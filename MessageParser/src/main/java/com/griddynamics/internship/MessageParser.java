@@ -30,11 +30,11 @@ public class MessageParser {
         MessageParser messageParser = new MessageParser(new DefaultFileLoader(), new DefaultFileReader(new DefaultFileValidator()),
                 new DefaultInputFormatter());
 
-        messageParser.run(path);
+        messageParser.parse(path);
 
     }
 
-    public void run(String path) {
+    public void parse(String path) {
         try {
             final Path file = fileLoader.load(path);
             final List<String> lines = fileReader.read(file);
