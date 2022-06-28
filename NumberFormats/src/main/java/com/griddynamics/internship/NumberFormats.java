@@ -12,6 +12,7 @@ import com.griddynamics.internship.util.Pair;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.TreeMap;
 
 public class NumberFormats {
     private final FileLoader fileLoader;
@@ -35,7 +36,7 @@ public class NumberFormats {
     public void run(String path) {
         try {
             final Path file = fileLoader.load(path);
-            final List<Pair<String, Double>> input = fileReader.read(file);
+            final TreeMap<String, Double> input = fileReader.read(file);
             filePrinter.print(input);
         }
         catch (DefaultFileNotFoundException e) {
