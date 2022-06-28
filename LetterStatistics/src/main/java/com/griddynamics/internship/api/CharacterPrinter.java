@@ -1,7 +1,7 @@
 package com.griddynamics.internship.api;
 
-import java.util.Map;
+import java.util.TreeMap;
 
 public interface CharacterPrinter {
-    void print(Map<Character,Integer> characterCountMap,int limit);
+    void print(TreeMap<Character, Integer> characterCountMap, int limit);
 }

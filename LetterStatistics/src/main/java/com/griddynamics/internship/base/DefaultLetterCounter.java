@@ -3,14 +3,13 @@ package com.griddynamics.internship.base;
 import com.griddynamics.internship.api.FileReader;
 import com.griddynamics.internship.api.LetterCounter;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DefaultLetterCounter implements LetterCounter {
     @Override
-    public Map<Character, Integer> count(List<String> lines) {
-        final Map<Character, Integer> characterCountMap = new LinkedHashMap<>();
+    public TreeMap<Character, Integer> count(List<String> lines) {
+
+        final TreeMap<Character, Integer> characterCountMap = new TreeMap<>();
         for (String line : lines) {
             String formattedLine = line.toLowerCase();
             for (char character : formattedLine.toCharArray()) {
