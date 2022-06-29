@@ -1,4 +1,4 @@
-package com.griddynamics.internship.exceptions;
+package com.griddynamics.primenumberstack.exceptions;
 
 public class PrimeNumberStackOrderException extends RuntimeException {
     public PrimeNumberStackOrderException() {

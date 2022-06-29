@@ -1,13 +1,13 @@
-package com.griddynamics.internship;
+package com.griddynamics.primenumberstack;
 
-import com.griddynamics.internship.exceptions.NotPrimeNumberException;
-import com.griddynamics.internship.exceptions.PrimeNumberStackOrderException;
+import com.griddynamics.primenumberstack.exceptions.NotPrimeNumberException;
+import com.griddynamics.primenumberstack.exceptions.PrimeNumberStackOrderException;
 
 import java.util.Iterator;
 
-import static com.griddynamics.internship.util.Numbers.isPrime;
+import static com.griddynamics.primenumberstack.util.Numbers.isPrime;
 
-public class PrimeNumberStack implements Iterable<Integer> {
+    public class PrimeNumberStack implements Iterable<Integer> {
     private final Integer[] primes;
 
     private int size;

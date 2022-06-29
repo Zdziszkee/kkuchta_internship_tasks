@@ -1,4 +1,4 @@
-package com.griddynamics.internship.util;
+package com.griddynamics.primenumberstack.util;
 
 public class Numbers {
     public static boolean isPrime(int n) {
