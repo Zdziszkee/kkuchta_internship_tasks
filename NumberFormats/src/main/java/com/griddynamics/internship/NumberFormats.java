@@ -7,11 +7,9 @@ import com.griddynamics.internship.base.DefaultFileLoader;
 import com.griddynamics.internship.base.DefaultFilePrinter;
 import com.griddynamics.internship.base.DefaultFileReader;
 import com.griddynamics.internship.base.exceptions.DefaultFileNotFoundException;
-import com.griddynamics.internship.util.Pair;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.TreeMap;
 
 public class NumberFormats {
