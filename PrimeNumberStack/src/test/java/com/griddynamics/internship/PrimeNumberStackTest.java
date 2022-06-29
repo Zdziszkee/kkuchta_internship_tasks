@@ -20,9 +20,7 @@ public class PrimeNumberStackTest {
         for (Integer integer : integers) {
             System.out.println(integer);
         }
-        System.out.println("==========================");
-        integers.pop();
-        integers.pop();
+
     }
 
     @Test

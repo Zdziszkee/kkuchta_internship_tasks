@@ -1,6 +1,7 @@
 package com.griddynamics.internship;
 
 import com.griddynamics.internship.exceptions.NotPrimeNumberException;
+import com.griddynamics.internship.exceptions.PrimeNumberStackOrderException;
 
 import java.util.Iterator;
 
@@ -20,10 +21,13 @@ public class PrimeNumberStack implements Iterable<Integer> {
         if (!isPrime(n)) {
             throw new NotPrimeNumberException();
         }
-        if (size  > primes.length) {
+        if (size > primes.length) {
             throw new IndexOutOfBoundsException("Prime number stack is full");
         }
-        primes[size ] = n;
+        if (size != 0 && primes[size - 1] >= n) {
+            throw new PrimeNumberStackOrderException();
+        }
+        primes[size] = n;
         size++;
         return n;
     }
