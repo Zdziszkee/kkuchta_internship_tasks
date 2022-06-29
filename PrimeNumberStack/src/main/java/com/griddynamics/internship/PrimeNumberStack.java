@@ -59,7 +59,7 @@ public class PrimeNumberStack implements Iterable<Integer> {
 
 
     private class StackIterator implements Iterator<Integer> {
-        private Integer index = 0;
+        private int index = 0;
 
         @Override
         public boolean hasNext() {
