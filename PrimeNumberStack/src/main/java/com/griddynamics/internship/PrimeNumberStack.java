@@ -4,6 +4,8 @@ import com.griddynamics.internship.exceptions.NotPrimeNumberException;
 
 import java.util.Iterator;
 
+import static com.griddynamics.internship.util.Numbers.isPrime;
+
 public class PrimeNumberStack implements Iterable<Integer> {
     private final Integer[] primes;
 
@@ -18,10 +20,10 @@ public class PrimeNumberStack implements Iterable<Integer> {
         if (!isPrime(n)) {
             throw new NotPrimeNumberException();
         }
-        if (size >= primes.length) {
+        if (size  > primes.length) {
             throw new IndexOutOfBoundsException("Prime number stack is full");
         }
-        primes[size - 1] = n;
+        primes[size ] = n;
         size++;
         return n;
     }
@@ -55,14 +57,6 @@ public class PrimeNumberStack implements Iterable<Integer> {
         return new StackIterator();
     }
 
-    private boolean isPrime(int n) {
-        for (int i = 2; i < n; i++) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     private class StackIterator implements Iterator<Integer> {
         private Integer index = 0;
