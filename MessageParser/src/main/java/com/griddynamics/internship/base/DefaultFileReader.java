@@ -1,8 +1,8 @@
 package com.griddynamics.internship.base;
 
+import com.griddynamics.internship.base.exceptions.WrongFileFormatException;
 import com.griddynamics.internship.api.FileReader;
 import com.griddynamics.internship.api.FileValidator;
-import com.griddynamics.internship.base.exceptions.WrongFileFormatException;
 
 import java.io.IOException;
 import java.nio.file.Files;

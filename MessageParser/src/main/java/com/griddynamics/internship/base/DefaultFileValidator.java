@@ -1,7 +1,6 @@
 package com.griddynamics.internship.base;
 
 import com.griddynamics.internship.api.FileValidator;
-import com.griddynamics.internship.base.exceptions.WrongFileFormatException;
 
 import java.nio.file.Path;
 import java.util.List;

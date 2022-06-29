@@ -2,7 +2,6 @@ package com.griddynamics.internship.base;
 
 import com.griddynamics.internship.api.FileLoader;
 import com.griddynamics.internship.base.exceptions.DefaultFileNotFoundException;
-import com.griddynamics.internship.base.exceptions.WrongFileFormatException;
 
 import java.net.URL;
 import java.nio.file.Path;
