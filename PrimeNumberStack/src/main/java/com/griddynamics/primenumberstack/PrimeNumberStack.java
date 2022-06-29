@@ -4,10 +4,11 @@ import com.griddynamics.primenumberstack.exceptions.NotPrimeNumberException;
 import com.griddynamics.primenumberstack.exceptions.PrimeNumberStackOrderException;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import static com.griddynamics.primenumberstack.util.Numbers.isPrime;
 
-    public class PrimeNumberStack implements Iterable<Integer> {
+public class PrimeNumberStack implements Iterable<Integer> {
     private final Integer[] primes;
 
     private int size;
@@ -72,6 +73,9 @@ import static com.griddynamics.primenumberstack.util.Numbers.isPrime;
 
         @Override
         public Integer next() {
+            if (index >= primes.length) {
+                throw new NoSuchElementException();
+            }
             final int previous = index;
             index++;
             return primes[previous];
