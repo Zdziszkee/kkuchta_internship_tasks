@@ -9,8 +9,7 @@ import java.util.TreeMap;
 public class DefaultFilePrinter implements FilePrinter {
     @Override
     public void print(TreeMap<String, Double> input) {
-        final Iterator<Map.Entry<String, Double>> iterator = input.descendingMap()
-                                                                  .entrySet()
+        final Iterator<Map.Entry<String, Double>> iterator = input.entrySet()
                                                                   .iterator();
         while (iterator.hasNext()) {
             final Map.Entry<String, Double> next = iterator.next();
