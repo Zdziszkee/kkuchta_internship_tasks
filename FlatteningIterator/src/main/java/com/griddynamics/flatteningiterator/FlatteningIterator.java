@@ -1,5 +1,6 @@
 package com.griddynamics.flatteningiterator;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -14,7 +15,17 @@ public class FlatteningIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        return iterators[index].hasNext();
+
+        final Iterator<Iterator<T>> iteratorsIterator = Arrays.stream(iterators)
+                                                              .iterator();
+        while (iteratorsIterator.hasNext()) {
+            final Iterator<T> iterator = iteratorsIterator.next();
+            if (iterator.hasNext()) {
+                return true;
+            }
+
+        }
+        return false;
     }
 
     @Override
