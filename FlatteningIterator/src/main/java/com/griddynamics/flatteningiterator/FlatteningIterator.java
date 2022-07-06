@@ -1,45 +1,46 @@
 package com.griddynamics.flatteningiterator;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class FlatteningIterator<T> implements Iterator<T> {
     private final Iterator<T>[] iterators;
-    private int index = 0;
+
+    private Iterator<T> current;
+
+    private int iteratorIndex;
 
     @SafeVarargs
     public FlatteningIterator(Iterator<T>... iterators) {
         this.iterators = iterators;
+        if (iterators.length > 0) {
+            current = iterators[0];
+            iteratorIndex = 0;
+        }
     }
 
     @Override
     public boolean hasNext() {
 
-        final Iterator<Iterator<T>> iteratorsIterator = Arrays.stream(iterators)
-                                                              .iterator();
-        while (iteratorsIterator.hasNext()) {
-            final Iterator<T> iterator = iteratorsIterator.next();
-            if (iterator.hasNext()) {
-                return true;
-            }
-
+        boolean hasNext = current.hasNext();
+        final int nextIteratorIndex = iteratorIndex + 1;
+        if (hasNext) {
+            return true;
+        } else if (nextIteratorIndex < iterators.length) {
+            this.current = iterators[nextIteratorIndex];
+            iteratorIndex = nextIteratorIndex;
+            return hasNext();
         }
+
         return false;
     }
 
     @Override
     public T next() {
-        final Iterator<T> iterator = iterators[index];
-        if (iterator.hasNext()) {
-            T next = iterator.next();
-            if (!iterator.hasNext() && (index + 1) < iterators.length) {
-                index++;
-            }
-            return next;
-        } else {
-            throw new NoSuchElementException();
+        if (!hasNext()) {
+            throw new NoSuchElementException("there is no more elements");
         }
+        return current.next();
     }
 
 }
