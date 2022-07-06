@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class DefaultFileReader implements FileReader {
 
@@ -18,8 +19,10 @@ public class DefaultFileReader implements FileReader {
     public List<Country> read(Path path) throws IOException {
 
         final List<String> lines = Files.readAllLines(path);
-        final List<Country> countries = new ArrayList<>();
-        lines.forEach(line -> {
+
+
+        return lines.stream().map(line -> {
+
             final String[] words = PATTERN.split(line);
 
             if (words.length != 5) {
@@ -29,9 +32,8 @@ public class DefaultFileReader implements FileReader {
             final Continent continent = Continent.getContinentByAlias(words[2]);
             final double area = Double.parseDouble(words[3]);
             final int population = Integer.parseInt(words[4]);
-            countries.add(new Country(name, continent, population, area));
-        });
 
-        return countries;
+            return new Country(name, continent, population, area);
+        }).collect(Collectors.toList());
     }
 }
