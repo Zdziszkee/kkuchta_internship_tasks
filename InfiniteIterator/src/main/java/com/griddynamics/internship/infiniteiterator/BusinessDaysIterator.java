@@ -20,12 +20,10 @@ public class BusinessDaysIterator implements Iterator<LocalDate> {
     @Override
     public LocalDate next() {
 
-        localDate = localDate.plusDays(1);
-
-        while (localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+        do {
             localDate = localDate.plusDays(1);
+        } while (localDate.getDayOfWeek() == DayOfWeek.SATURDAY || localDate.getDayOfWeek() == DayOfWeek.SUNDAY);
 
-        }
         return localDate;
     }
 }
