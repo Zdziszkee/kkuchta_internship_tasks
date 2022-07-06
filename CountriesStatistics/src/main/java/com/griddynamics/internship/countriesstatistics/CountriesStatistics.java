@@ -11,7 +11,6 @@ import com.griddynamics.internship.countriesstatistics.base.exceptions.WrongFile
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static java.util.Comparator.comparingDouble;
+import static java.util.stream.Collectors.groupingBy;
 
 public class CountriesStatistics {
     private final FileReader fileReader;
@@ -70,7 +70,7 @@ public class CountriesStatistics {
 
             //#555555555555555555555555555
 
-            final Map<Continent, List<Country>> continentCountries = countries.stream().collect(Collectors.groupingBy(Country::continent));
+            final Map<Continent, List<Country>> continentCountries = countries.stream().collect(groupingBy(Country::continent));
 
             final Map<Continent, Double> continentArea = new HashMap<>();
 
@@ -90,7 +90,7 @@ public class CountriesStatistics {
 
             //#7777777777777777777777777777777
             final Map<Character, List<Country>> groupByFirstChar = countries.stream()
-                                                                            .collect(Collectors.groupingBy(country -> country.name().charAt(0)));
+                                                                            .collect(groupingBy(country -> country.name().charAt(0)));
             System.out.println(groupByFirstChar);
 
 
