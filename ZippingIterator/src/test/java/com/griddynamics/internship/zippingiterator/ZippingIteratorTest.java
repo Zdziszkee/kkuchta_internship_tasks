@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ZippingIteratorTest {
     @Test
     public void testIteration() {
+
         final Iterator<Integer> iterator1 = List.of(1, 2, 3, 4).iterator();
         final Iterator<String> iterator2 = List.of("one", "two", "three").iterator();
 
