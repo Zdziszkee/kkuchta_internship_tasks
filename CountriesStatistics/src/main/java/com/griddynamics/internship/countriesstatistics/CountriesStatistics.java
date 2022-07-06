@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
+import static java.util.Comparator.comparingDouble;
+
 public class CountriesStatistics {
     private final FileReader fileReader;
     private final FileLoader fileLoader;
@@ -37,88 +40,58 @@ public class CountriesStatistics {
             final Path file = fileLoader.load(path);
             final List<Country> countries = fileReader.read(file);
             //#1111111111111111111111111
-            final List<Country> sortedByPopulationDescending = countries.stream()
-                                                                        .sorted((first, second) -> {
-                                                                            int firstPopulation = first.population();
-                                                                            int secondPopulation = second.population();
-                                                                            return Integer.compare(firstPopulation, secondPopulation);
-                                                                        })
-                                                                        .toList();
+            final List<Country> sortedByPopulationDescending = countries.stream().sorted((first, second) -> {
+                int firstPopulation = first.population();
+                int secondPopulation = second.population();
+                return Integer.compare(firstPopulation, secondPopulation);
+            }).toList();
 
 
             //#222222222222222222222
-            final Country maxPopulationCountry = sortedByPopulationDescending.get(0);
-            System.out.println("Max Population: " + maxPopulationCountry);
 
-            final Country minPopulationCountry = sortedByPopulationDescending.get(sortedByPopulationDescending.size() - 1);
-            System.out.println("Min Population: " + minPopulationCountry);
+            System.out.println("Max Population: " + sortedByPopulationDescending.stream().max(comparingDouble(Country::population)));
+            System.out.println("Min Population: " + sortedByPopulationDescending.stream().min(comparingDouble(Country::population)));
 
-            final List<Country> sortedByAreaDescending = countries.stream()
-                                                                  .sorted((first, second) -> {
-                                                                      final double firstArea = first.area();
-                                                                      final double secondArea = second.area();
-                                                                      return Double.compare(firstArea, secondArea);
-                                                                  })
-                                                                  .toList();
 
-            final Country maxAreaCountry = sortedByAreaDescending.get(0);
-            System.out.println("Max Area: " + maxAreaCountry);
-
-            final Country minAreaCountry = sortedByAreaDescending.get(sortedByAreaDescending.size() - 1);
-            System.out.println("Min Area: " + minAreaCountry);
+            System.out.println("Max Area: " + sortedByPopulationDescending.stream().max(comparingDouble(Country::area)));
+            System.out.println("Min Area: " + sortedByPopulationDescending.stream().max(comparingDouble(Country::area)));
 
             //#333333333333333333333333333
 
-            final List<Country> sortedByContinentAndArea = countries.stream()
-                                                                    .limit(20)
-                                                                    .sorted(Comparator.comparing(Country::continent)
-                                                                                      .thenComparingDouble(Country::area)
-                                                                                      .reversed())
-                                                                    .toList();
+            final List<Country> sortedByContinentAndArea = countries.stream().limit(20)
+                                                                    .sorted(comparing(Country::continent).thenComparingDouble(Country::area)
+                                                                                                         .reversed()).toList();
 
             sortedByContinentAndArea.forEach(country -> System.out.println(sortedByContinentAndArea));
 
             //#444444444444444444444444444
 
-            final List<Country> sortedByPopulation = countries.stream()
-                                                              .filter(country -> country.continent() == Continent.AFRICA)
-                                                              .sorted(Comparator.comparing(Country::population))
-                                                              .toList();
-
-            System.out.println("Max population: " + sortedByPopulation.get(0));
+            System.out.println("Max population: " + sortedByPopulationDescending.stream().max(comparingDouble(Country::population)));
 
             //#555555555555555555555555555
 
-            final  Map<Continent, List<Country>> continentCountries = countries.stream()
-                                                                        .collect(Collectors.groupingBy(Country::continent));
+            final Map<Continent, List<Country>> continentCountries = countries.stream().collect(Collectors.groupingBy(Country::continent));
 
-            final  Map<Continent, Double> continentArea = new HashMap<>();
+            final Map<Continent, Double> continentArea = new HashMap<>();
 
             continentCountries.forEach((key, value) -> {
-                continentArea.put(key, value.stream()
-                                            .mapToDouble(Country::area)
-                                            .sum());
+                continentArea.put(key, value.stream().mapToDouble(Country::area).sum());
             });
 
-            continentArea.forEach((key,value)-> System.out.println(key + " " +value));
+            continentArea.forEach((key, value) -> System.out.println(key + " " + value));
 
 
             //#666666666666666666666666666666
 
-            final List<Country> filteredByPopulation = countries.stream()
-                                                          .filter(country -> country.population() > 100000000)
-                                                          .toList();
+            final List<Country> filteredByPopulation = countries.stream().filter(country -> country.population() > 100000000).toList();
 
             System.out.println(filteredByPopulation);
 
 
             //#7777777777777777777777777777777
             final Map<Character, List<Country>> groupByFirstChar = countries.stream()
-                                                             .collect(Collectors.groupingBy(country -> country.name()
-                                                                                                              .charAt(0)));
+                                                                            .collect(Collectors.groupingBy(country -> country.name().charAt(0)));
             System.out.println(groupByFirstChar);
-
-
 
 
         }
