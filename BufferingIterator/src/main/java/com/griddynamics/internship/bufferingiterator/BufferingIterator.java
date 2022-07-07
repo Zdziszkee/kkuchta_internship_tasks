@@ -28,11 +28,9 @@ public class BufferingIterator<T> implements Iterator<List<T>> {
         }
 
         final List<T> elements = new ArrayList<>();
-        int count = 0;
 
-        while (count < batchSize && iterator.hasNext()) {
+        while (elements.size() < batchSize && iterator.hasNext()) {
             elements.add(iterator.next());
-            count++;
         }
 
         return elements;
