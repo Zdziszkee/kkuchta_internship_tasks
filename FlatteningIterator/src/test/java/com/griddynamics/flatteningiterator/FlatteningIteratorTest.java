@@ -20,8 +20,8 @@ public class FlatteningIteratorTest {
         Iterator<Integer> iterator4 = List.of(14, 15, 16, 17, 18, 19).iterator();
 
         Iterator<Integer> flatteningIterator = new FlatteningIterator<>(iterator, iterator1, iterator2, iterator3, iterator4);
-        flatteningIterator.next();
-        flatteningIterator.next();
+        assertEquals(flatteningIterator.next(),1);
+        assertEquals(flatteningIterator.next(),2);
         assertTrue(flatteningIterator.hasNext());
 
     }
