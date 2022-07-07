@@ -11,7 +11,6 @@ import static com.griddynamics.primenumberstack.util.Numbers.isPrime;
 
 public class PrimeNumberStack implements Iterable<Integer> {
     private final Integer[] primes;
-
     private int size;
 
     public PrimeNumberStack(final int size) {
@@ -24,7 +23,7 @@ public class PrimeNumberStack implements Iterable<Integer> {
             throw new NotPrimeNumberException();
         }
         if (size > primes.length) {
-            throw new  PrimeNumberStackFullException();
+            throw new PrimeNumberStackFullException();
         }
         if (size != 0 && primes[size - 1] >= n) {
             throw new PrimeNumberStackOrderException();

@@ -3,11 +3,13 @@ package com.griddynamics.primenumbetstack;
 import com.griddynamics.primenumberstack.PrimeNumberStack;
 import com.griddynamics.primenumberstack.exceptions.NotPrimeNumberException;
 import com.griddynamics.primenumberstack.util.Numbers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PrimeNumberStackTest {
     @Test
@@ -51,8 +53,6 @@ public class PrimeNumberStackTest {
         }
         assertEquals(count, 9);
     }
-
-
 
 
 }
