@@ -52,15 +52,7 @@ public class PrimeNumberStackTest {
         assertEquals(count, 9);
     }
 
-    @Test
-    public void testIsPrime() {
 
-        final int notPrime = 4;
-        final int prime = 7;
-
-        assertTrue(Numbers.isPrime(7));
-        assertFalse(Numbers.isPrime(4));
-    }
 
 
 }
