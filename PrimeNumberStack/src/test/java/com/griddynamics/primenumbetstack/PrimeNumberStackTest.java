@@ -12,10 +12,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PrimeNumberStackTest {
+
+    private PrimeNumberStack integers;
+
+    @BeforeEach
+    public void setup(){
+        integers = new PrimeNumberStack(10);
+    }
+
     @Test
     public void testPush() {
 
-        final PrimeNumberStack integers = new PrimeNumberStack(10);
 
         assertEquals(integers.size(), 0);
         integers.push(3);
@@ -27,7 +34,6 @@ public class PrimeNumberStackTest {
     @Test
     public void testPeek() {
 
-        final PrimeNumberStack integers = new PrimeNumberStack(10);
 
         assertEquals(integers.size(), 0);
         integers.push(3);
@@ -40,15 +46,12 @@ public class PrimeNumberStackTest {
     @Test
     public void testIterator() {
 
-        final PrimeNumberStack integers = new PrimeNumberStack(10);
 
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            IntStream.range(0, 100).filter(Numbers::isPrime).forEach(integers::push);
-        });
+        assertThrows(IndexOutOfBoundsException.class, () -> IntStream.range(0, 100).filter(Numbers::isPrime).forEach(integers::push));
 
 
         int count = 0;
-        for (Integer integer : integers) {
+        for (Integer ignored : integers) {
             count++;
         }
         assertEquals(count, 9);
