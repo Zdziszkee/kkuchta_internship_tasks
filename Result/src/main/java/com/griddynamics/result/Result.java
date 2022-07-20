@@ -18,17 +18,18 @@ public final class Result<T, E extends Throwable> {
     }
 
 
-    public static <T, E extends Throwable> Result<T, E> ok(T value) {
+
+    public static <T, E extends Throwable> Result<T, ? extends E> ok(T value) {
 
         return new Result<>(value, null);
     }
 
-    public static <T, E extends Throwable> Result<T, E> error(E error) {
+    public static <T, E extends Throwable> Result<T, ? extends Throwable> error(E error) {
 
         return new Result<>(null, error);
     }
 
-    public static <T, E extends Throwable> Result<T, E> of(Supplier<T> operation) {
+    public static <T> Result<T, ? extends Throwable> of(Supplier<T> operation) {
 
         try {
             return new Result<>(operation.get(), null);
@@ -36,7 +37,7 @@ public final class Result<T, E extends Throwable> {
         }
         catch (Throwable throwable) {
 
-            return Result.error((E) throwable);
+            return error(throwable);
         }
     }
 
@@ -49,26 +50,24 @@ public final class Result<T, E extends Throwable> {
         return value;
     }
 
-    public <V> Result<V, E> map(Function<T, V> mapper) {
+    public <V> Result<V, ? extends Throwable> map(Function<T, V> mapper) {
 
-        try {
-
+        if (exception == null) {
             return ok(mapper.apply(this.value));
         }
-        catch (Throwable throwable) {
-            return error(exception);
-        }
+
+        return error(exception);
+
     }
 
-    public <V extends Throwable> Result<T, V> mapError(Function<E, V> mapper) {
+    public <V extends Throwable> Result<?, ? extends Throwable> mapError(Function<E, V> mapper) {
 
-        try {
 
+        if (exception == null) {
             return ok(value);
         }
-        catch (Throwable throwable) {
-            return error(mapper.apply(exception));
-        }
+
+        return error(mapper.apply(exception));
     }
 
     public T orElse(T value) {
@@ -81,7 +80,7 @@ public final class Result<T, E extends Throwable> {
         return exception == null ? Optional.of(value) : Optional.empty();
     }
 
-    public <X, Y extends Throwable> Result<X, Y> flatMap(Function<T, Result<X, Y>> function) throws E {
+    public <X> Result<X, ? extends Throwable> flatMap(Function<T, Result<X, ? extends Throwable>> function) throws E {
 
         if (exception == null) {
             return function.apply(value);

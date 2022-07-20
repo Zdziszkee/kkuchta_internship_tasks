@@ -23,7 +23,7 @@ public class ResultTest {
     @Test
     public void testMap() throws Throwable {
 
-        Integer result = Result.of(() -> 1).map((value) -> value * 2).unwrap();
+        Integer result = Result.of(() -> 1).map(number -> number * 2).unwrap();
         assertEquals(result, 2);
 
     }
@@ -39,7 +39,7 @@ public class ResultTest {
 
         assertThrows(NullPointerException.class, () -> Result.of(() -> {
             throw new IllegalArgumentException();
-        }).mapError((throwable -> new NullPointerException())).unwrap());
+        }).mapError(throwable -> new IllegalArgumentException()).unwrap());
 
     }
 
