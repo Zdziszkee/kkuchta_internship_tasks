@@ -25,7 +25,6 @@ public class ResultTest {
 
         Integer result = Result.of(() -> 1).map(number -> number * 2).unwrap();
         assertEquals(result, 2);
-
     }
 
     @Test
@@ -40,7 +39,6 @@ public class ResultTest {
         assertThrows(NullPointerException.class, () -> Result.of(() -> {
             throw new IllegalArgumentException();
         }).mapError(throwable -> new IllegalArgumentException()).unwrap());
-
     }
 
 }
