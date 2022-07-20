@@ -36,7 +36,7 @@ public class ResultTest {
     @Test
     public void mapError() {
 
-        assertThrows(NullPointerException.class, () -> Result.of(() -> {
+        assertThrows(IllegalArgumentException.class, () -> Result.of(() -> {
             throw new IllegalArgumentException();
         }).mapError(throwable -> new IllegalArgumentException()).unwrap());
     }
