@@ -20,12 +20,10 @@ public final class Result<T, E extends Throwable> {
 
     public static <T, E extends Throwable> Result<T, E> ok(T value) {
 
-
         return new Result<>(value, null);
     }
 
     public static <T, E extends Throwable> Result<T, E> error(E error) {
-
 
         return new Result<>(null, error);
     }
