@@ -18,17 +18,36 @@ public final class Result<T, E extends Throwable> {
     }
 
 
-
+    /**
+     *
+     * @param value - input
+     * @return Result for given input
+     * @param <T> input type
+     * @param <E> exception type
+     */
     public static <T, E extends Throwable> Result<T, ? extends E> ok(T value) {
 
         return new Result<>(value, null);
     }
 
+    /**
+     *
+     * @param error - input error
+     * @return Result for given error
+     * @param <T> result value type
+     * @param <E> exception value type
+     */
     public static <T, E extends Throwable> Result<T, ? extends Throwable> error(E error) {
 
         return new Result<>(null, error);
     }
 
+    /**
+     *
+     * @param operation supplier returning some value
+     * @return result for that operation
+     * @param <T> - optional value returned from operation
+     */
     public static <T> Result<T, ? extends Throwable> of(Supplier<T> operation) {
 
         try {
@@ -41,6 +60,11 @@ public final class Result<T, E extends Throwable> {
         }
     }
 
+    /**
+     *
+     * @return value of that result
+     * @throws E if exception occurred while getting value
+     */
     public T unwrap() throws E {
 
         if (exception != null) {
@@ -50,6 +74,12 @@ public final class Result<T, E extends Throwable> {
         return value;
     }
 
+    /**
+     *
+     * @param mapper used to transform the current result based on value inside, does nothing when there is no value
+     * @return new Result
+     * @param <V> type of new value
+     */
     public <V> Result<V, ? extends Throwable> map(Function<T, V> mapper) {
 
         if (exception == null) {
@@ -60,6 +90,12 @@ public final class Result<T, E extends Throwable> {
 
     }
 
+    /**
+     *
+     * @param mapper used to transform the current result based on error inside, does nothing when there is no error
+     * @return new Result
+     * @param <V> type of exception
+     */
     public <V extends Throwable> Result<?, ? extends Throwable> mapError(Function<E, V> mapper) {
 
 
@@ -70,16 +106,32 @@ public final class Result<T, E extends Throwable> {
         return error(mapper.apply(exception));
     }
 
+    /**
+     *
+     * @param value returned if exception occurs
+     * @return value
+     */
     public T orElse(T value) {
 
         return exception == null ? this.value : value;
     }
 
+    /**
+     *
+     * @return value as optional
+     */
     public Optional<T> toOptional() {
 
         return exception == null ? Optional.of(value) : Optional.empty();
     }
 
+    /**
+     *
+     * @param function used to transform current value to other result
+     * @return new result
+     * @param <X> value of new result
+     * @throws E exception thrown if there is no value in current result
+     */
     public <X> Result<X, ? extends Throwable> flatMap(Function<T, Result<X, ? extends Throwable>> function) throws E {
 
         if (exception == null) {
