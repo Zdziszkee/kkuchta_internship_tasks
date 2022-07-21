@@ -71,14 +71,12 @@ public final class Result<T, E extends Throwable> {
         }
 
         return error(exception);
-
     }
 
     /**
      * applies the given function to the exception, or does nothing in case of success
      */
     public <V extends Throwable> Result<T, V> mapError(Function<E, V> mapper) {
-
 
         if (exception == null) {
             return ok(value);
