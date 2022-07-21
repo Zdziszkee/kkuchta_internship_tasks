@@ -104,12 +104,13 @@ public final class Result<T, E extends Throwable> {
     /**
      * takes a function, which takes current type and returns a Result
      */
-    public <X> Result<X, ? extends Throwable> flatMap(Function<T, Result<X, ? extends Throwable>> function) throws E {
+    public <X> Result<X, ? extends Throwable> flatMap(Function<T, Result<X, ? extends Throwable>> function) {
 
         if (exception == null) {
             return function.apply(value);
+
         }
-        throw exception;
+        return error(exception);
     }
 
     @Override

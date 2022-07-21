@@ -41,4 +41,26 @@ public class ResultTest {
         }).mapError(throwable -> new IllegalArgumentException()).unwrap());
     }
 
+    @Test
+    public void unwrap() {
+
+        assertDoesNotThrow(() -> {
+            String unwrap = Result.of(() -> "string").unwrap();
+            assertEquals("string", unwrap);
+            return unwrap;
+        });
+
+        assertThrows(NullPointerException.class, () -> {
+            Result.of(() -> {
+                throw new NullPointerException();
+            }).unwrap();
+        });
+    }
+
+    @Test
+    public void error() {
+
+        assertThrows(NullPointerException.class, () -> Result.error(new NullPointerException()).unwrap());
+    }
+
 }
