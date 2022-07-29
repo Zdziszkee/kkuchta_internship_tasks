@@ -15,7 +15,7 @@ public class Mentor implements Serializable {
 
     private final transient String password;
 
-    private transient List<Intern> interns = new ArrayList<>();
+    private final List<Intern> interns = new ArrayList<>();
 
 
     public Mentor(String name, String password) {
@@ -50,7 +50,6 @@ public class Mentor implements Serializable {
     private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
 
         inputStream.defaultReadObject();
-        this.interns = (List<Intern>) inputStream.readObject();
 
     }
 
@@ -59,7 +58,6 @@ public class Mentor implements Serializable {
     private void writeObject(ObjectOutputStream outputStream) throws IOException {
 
         outputStream.defaultWriteObject();
-        outputStream.writeObject(interns);
     }
 
 }
