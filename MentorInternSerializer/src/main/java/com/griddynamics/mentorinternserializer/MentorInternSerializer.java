@@ -42,7 +42,7 @@ public class MentorInternSerializer {
                 System.out.println("Mentor interns equality: " + readMentor.getInterns().equals(mentor.getInterns()));
                 System.out.println("Mentor hashcodes equality: " + (readMentor.hashCode() == mentor.hashCode()));
 
-                System.out.println("Intern hashcodes: ");
+                System.out.println("Intern mentor's hashcodes: ");
                 readMentor.getInterns().forEach(intern -> System.out.println(intern.getMentor().hashCode()));
 
             }
