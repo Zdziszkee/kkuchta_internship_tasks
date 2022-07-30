@@ -9,13 +9,11 @@ public class Intern implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-
     private final String name;
 
     private final transient String password;
 
-    private transient Mentor mentor;
-
+    private  Mentor mentor;
 
     Intern(String name, String password, Mentor mentor) {
 
@@ -23,7 +21,6 @@ public class Intern implements Serializable {
         this.password = password;
         this.mentor = mentor;
     }
-
 
     public String getName() {
 
@@ -40,28 +37,17 @@ public class Intern implements Serializable {
         return mentor;
     }
 
-
     @Serial
     private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
 
         inputStream.defaultReadObject();
-        final String mentorName = (String) inputStream.readObject();
-
-        this.mentor = new Mentor(mentorName, null);
-        List<String> interns = (List<String>) inputStream.readObject();
-        interns.forEach(intern -> mentor.addIntern(intern, null));
-
 
     }
-
 
     @Serial
     private void writeObject(ObjectOutputStream outputStream) throws IOException {
 
         outputStream.defaultWriteObject();
-        outputStream.writeObject(mentor.getName());
-        outputStream.writeObject(mentor.getInterns().stream().map(intern -> intern.name).collect(Collectors.toList()));
-
     }
 
 }
