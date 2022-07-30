@@ -29,3 +29,19 @@ Modify a code to skip serialization of password field for both classes due to se
 
 Note that Serialization was able to resolve cyclic references in a correct way.
 
+
+CONCLUSIONS
+
+Mentor name equality: true  ``` serialized and deserialized values are the same just as expected ```
+
+Mentor interns equality: false ``` we did not override equals methods, so deafult equals implementation is used that's why interns are not equal (new instances are created when deserializing) ```
+
+Mentor hashcodes equality: false ``` we are depending on default hascode implementation, which means if objects are equal hashcode must be the same```
+
+Intern mentor's hashcodes:
+
+1528902577
+1528902577
+1528902577
+
+``` hashcode is the same for all interns which means all interns have the same mentor ```

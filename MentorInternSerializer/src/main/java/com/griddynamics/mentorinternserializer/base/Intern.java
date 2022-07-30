@@ -1,8 +1,6 @@
 package com.griddynamics.mentorinternserializer.base;
 
 import java.io.*;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Intern implements Serializable {
 
@@ -13,7 +11,7 @@ public class Intern implements Serializable {
 
     private final transient String password;
 
-    private  Mentor mentor;
+    private Mentor mentor;
 
     Intern(String name, String password, Mentor mentor) {
 
@@ -41,7 +39,6 @@ public class Intern implements Serializable {
     private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
 
         inputStream.defaultReadObject();
-
     }
 
     @Serial
