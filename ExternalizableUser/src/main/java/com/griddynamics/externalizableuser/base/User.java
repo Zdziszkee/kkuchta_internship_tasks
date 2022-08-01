@@ -39,13 +39,26 @@ public class User implements Externalizable {
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
 
-        out.writeObject(webPage);
-        out.writeBoolean(isActive);
-        out.writeBoolean(isAdmin);
-        out.writeBoolean(isModerator);
-        out.writeBoolean(isVIP);
-        out.writeBoolean(isMuted);
-        out.writeBoolean(isBanned);
+        byte serialized = 0;
+        if (isActive) {
+            serialized |= 1;
+        }
+        if (isAdmin) {
+            serialized |= 2;
+        }
+        if (isModerator) {
+            serialized |= 4;
+        }
+        if (isVIP) {
+            serialized |= 8;
+        }
+        if (isMuted) {
+            serialized |= 16;
+        }
+        if (isBanned) {
+            serialized |= 32;
+        }
+        out.writeByte(serialized);
     }
 
     /**
@@ -63,13 +76,25 @@ public class User implements Externalizable {
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
-        this.webPage = (WebPage) in.readObject();
-        this.isActive = in.readBoolean();
-        this.isAdmin = in.readBoolean();
-        this.isModerator = in.readBoolean();
-        this.isVIP = in.readBoolean();
-        this.isMuted = in.readBoolean();
-        this.isBanned = in.readBoolean();
+        byte serialized = in.readByte();
+        if ((serialized & 1) == 1) {
+            this.isActive = true;
+        }
+        if ((serialized & 2) == 2) {
+            this.isAdmin = true;
+        }
+        if ((serialized & 4) == 4) {
+            this.isModerator = true;
+        }
+        if ((serialized & 8) == 8) {
+            this.isVIP = true;
+        }
+        if ((serialized & 16) == 16) {
+            this.isMuted = true;
+        }
+        if ((serialized & 32) == 32) {
+            this.isBanned = true;
+        }
     }
 
 }
