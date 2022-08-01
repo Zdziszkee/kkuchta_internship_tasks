@@ -8,22 +8,22 @@ public class Client implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private final String name;
+    private final String username;
 
     private final String password;
 
     private final Integer balance;
 
-    public Client(String name, String password, Integer balance) {
+    public Client(String username, String password, Integer balance) {
 
-        this.name = name;
+        this.username = username;
         this.password = password;
         this.balance = balance;
     }
 
-    public String getName() {
+    public String getUsername() {
 
-        return name;
+        return username;
     }
 
     public String getPassword() {
