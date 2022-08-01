@@ -7,7 +7,7 @@ import java.io.ObjectOutput;
 
 public class User implements Externalizable {
 
-    private WebPage webPage = new WebPage(this);
+    private final WebPage webPage = new WebPage(this);
 
     // bad code is for the sake of the task, do not do it in real life
     private boolean isActive = true;
@@ -69,12 +69,10 @@ public class User implements Externalizable {
      * and with the same types as were written by writeExternal.
      *
      * @param in the stream to read data from in order to restore the object
-     * @throws IOException            if I/O errors occur
-     * @throws ClassNotFoundException If the class for an object being
-     *                                restored cannot be found.
+     * @throws IOException if I/O errors occur
      */
     @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    public void readExternal(ObjectInput in) throws IOException {
 
         byte serialized = in.readByte();
         if ((serialized & 1) == 1) {
