@@ -27,8 +27,8 @@ public class MentorInternSerializer {
                 objectOutputStream.flush();
             }
             try (FileInputStream fileInputStream = new FileInputStream(file)) {
-                final ObjectInputStream objectOutputStream = new ObjectInputStream(fileInputStream);
-                final Mentor readMentor = (Mentor) objectOutputStream.readObject();
+                final ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+                final Mentor readMentor = (Mentor) objectInputStream.readObject();
                 System.out.println("Mentor name equality: " + readMentor.getName().equals(mentor.getName()));
                 System.out.println("Mentor interns equality: " + readMentor.getInterns().equals(mentor.getInterns()));
                 System.out.println("Mentor hashcodes equality: " + (readMentor.hashCode() == mentor.hashCode()));
