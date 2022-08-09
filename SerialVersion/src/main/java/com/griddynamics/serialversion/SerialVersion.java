@@ -9,7 +9,7 @@ public class SerialVersion {
     public static void main(String[] args) {
 
         final File file = new File("/Users/kkuchta/IdeaProjects/kkuchta_internship_tasks/SerialVersion/src/main/resources/cache.txt");
-        final Client client = new Client("NAME", "PASSWORD",  1);
+        final Client client = new Client("NAME", "PASSWORD",  1.0);
         /*
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             final ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);

@@ -26,3 +26,4 @@ EOFException is thrown when trying to read empty file.
 If we add field and try to read older version of object, null or default values will be assigned to it.
 Changing field name and deserializing old version of object is going to result in null or default value in renamed field.
 Which means we should serialVersionUUID when we add or rename fields.
+When we change type of the field, and try to deserialize ClassCastException is going to be thrown.
