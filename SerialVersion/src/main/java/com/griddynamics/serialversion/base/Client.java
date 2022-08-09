@@ -12,15 +12,20 @@ public class Client implements Serializable {
 
     private final String password;
 
-    private final Double balance;
+    private final Integer balance;
 
+    public Client() {
 
-    public Client(String username, String password, Double balance) {
+        this.username = "deafultname";
+        this.password = "DEFAULTPASSWORD";
+        this.balance = 13;
+    }
+
+    public Client(String username, String password, Integer balance) {
 
         this.username = username;
         this.password = password;
         this.balance = balance;
-
     }
 
     public String getUsername() {
@@ -33,7 +38,7 @@ public class Client implements Serializable {
         return password;
     }
 
-    public Double getBalance() {
+    public Integer getBalance() {
 
         return balance;
     }
