@@ -1,15 +1,15 @@
 package com.griddynamics.serializer.base.pojo;
 
+import com.griddynamics.dynamicproxy.api.Printable;
 import com.griddynamics.serializer.base.Serializable;
 
 @Serializable
-public class Dog {
+public class Dog implements Printable {
 
     private final String name;
 
     private final int age;
 
-    private Person owner;
 
     public Dog(final String name, final int age) {
 
@@ -17,9 +17,10 @@ public class Dog {
         this.age = age;
     }
 
-    public void setOwner(final Person owner) {
+    @Override
+    public String toString() {
 
-        this.owner = owner;
+        return "Dog{" + "name='" + name + '\'' + ", age=" + age + '}';
     }
 
 }

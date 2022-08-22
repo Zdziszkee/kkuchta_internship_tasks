@@ -21,8 +21,11 @@ public class JSONSerializer implements Serializer {
 
         final Class<?> typeClass = value.getClass();
         final StringBuilder stringBuilder = new StringBuilder();
-        if (SUPPORTED_TYPES.contains(value.getClass())) {
-            return "\"" + value + "\"";
+        if (SUPPORTED_TYPES.contains(typeClass)) {
+            if (typeClass == String.class) {
+                return "\"" + value + "\"";
+            }
+            return value.toString();
         } else if (value instanceof final Object[] array) {
             stringBuilder.append("[");
             for (int i = 0; i < array.length; i++) {
@@ -92,11 +95,9 @@ public class JSONSerializer implements Serializer {
                     stringBuilder.append("\"")
                                  .append(attributeName)
                                  .append("\":")
-                                 .append("\"")
-                                 .append(fieldValue.toString())
-                                 .append("\"")
+                                 .append(serialize(fieldValue))
                                  .append((i + 1 < fields.length && isSupported(fields[i + 1].getType())) ? "," : "");
-                } else {
+                }else{
                     stringBuilder.append(serialize(fieldValue));
                 }
             }
