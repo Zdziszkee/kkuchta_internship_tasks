@@ -9,7 +9,6 @@ public class TimingInvocationHandler<T> implements InvocationHandler {
     private final T target;
 
     public TimingInvocationHandler(T target) {
-
         this.target = target;
     }
 
@@ -60,10 +59,9 @@ public class TimingInvocationHandler<T> implements InvocationHandler {
      */
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-
         final long start = System.nanoTime();
         final Object result = method.invoke(target, args);
-        final double elapsed = (System.nanoTime() - start)/1_000_000.0;
+        final double elapsed = (System.nanoTime() - start) / 1_000_000.0;
         System.out.println("Elapsed " + elapsed + "ms method: " + method.getName());
         return result;
     }

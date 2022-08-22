@@ -11,7 +11,6 @@ import java.util.Set;
 public class Classes {
 
     public static Set<Class<?>> find(String path) {
-
         final InputStream stream = ClassLoader.getSystemClassLoader().getResourceAsStream(path.replaceAll("[.]", "/"));
         final Set<Class<?>> classes = new HashSet<>();
         if (stream == null) {
@@ -28,7 +27,6 @@ public class Classes {
     }
 
     private static Class<?> getClass(String className, String packageName) {
-
         try {
             return Class.forName(packageName + "." + className.substring(0, className.lastIndexOf('.')));
         }

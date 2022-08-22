@@ -19,7 +19,6 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
 public class Main {
 
     public static void main(String[] args) {
-
         Map<Integer, String> map = new HashMap<>();
         final TimingInvocationHandler<Map<Integer, String>> timingInvocationHandler = new TimingInvocationHandler<>(map);
         final Map<Integer, String> proxiedMap = (Map<Integer, String>) Proxy.newProxyInstance(Map.class.getClassLoader(), new Class[]{Map.class},
@@ -33,13 +32,13 @@ public class Main {
         //bytebuddy
         try {
             final Person instance = new ByteBuddy().subclass(Person.class)
-                                                  .method(named("toString"))
-                                                  .intercept(FixedValue.value("Hello world!"))
-                                                  .make()
-                                                  .load(ClassLoader.getSystemClassLoader())
-                                                  .getLoaded()
-                                                  .getDeclaredConstructor(int.class, int.class, String.class, Dog.class)
-                                                  .newInstance(12, 2312, "name", new Dog("dogname", 2));
+                                                   .method(named("toString"))
+                                                   .intercept(FixedValue.value("Hello world!"))
+                                                   .make()
+                                                   .load(ClassLoader.getSystemClassLoader())
+                                                   .getLoaded()
+                                                   .getDeclaredConstructor(int.class, int.class, String.class, Dog.class)
+                                                   .newInstance(12, 2312, "name", new Dog("dogname", 2));
             System.out.println(instance);
         }
         catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

@@ -2,6 +2,7 @@ package com.griddynamics.serializer.api;
 
 /**
  * Type adapter used to serialize custom objects
+ *
  * @param <T>
  */
 public interface TypeAdapter<T> {

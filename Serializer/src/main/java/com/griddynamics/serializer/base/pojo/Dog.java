@@ -10,16 +10,13 @@ public class Dog implements Printable {
 
     private final int age;
 
-
     public Dog(final String name, final int age) {
-
         this.name = name;
         this.age = age;
     }
 
     @Override
     public String toString() {
-
         return "Dog{" + "name='" + name + '\'' + ", age=" + age + '}';
     }
 

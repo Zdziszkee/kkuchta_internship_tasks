@@ -14,7 +14,6 @@ public class PrintInvocationHandler implements InvocationHandler {
     private final Serializer serializer;
 
     public PrintInvocationHandler(final Printable printable, final Serializer serializer) {
-
         this.printable = printable;
         this.serializer = serializer;
     }
@@ -66,7 +65,6 @@ public class PrintInvocationHandler implements InvocationHandler {
      */
     @Override
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-
         final Object result = method.invoke(printable);
         if (method.getName().equals("print")) {
             System.out.println(serializer.serialize(printable));

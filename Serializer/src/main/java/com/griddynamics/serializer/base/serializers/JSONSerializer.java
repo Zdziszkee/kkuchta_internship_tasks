@@ -18,7 +18,6 @@ public class JSONSerializer implements Serializer {
 
     @Override
     public <T> String serialize(T value) throws IllegalArgumentException {
-
         final Class<?> typeClass = value.getClass();
         final StringBuilder stringBuilder = new StringBuilder();
         if (SUPPORTED_TYPES.contains(typeClass)) {
@@ -97,7 +96,7 @@ public class JSONSerializer implements Serializer {
                                  .append("\":")
                                  .append(serialize(fieldValue))
                                  .append((i + 1 < fields.length && isSupported(fields[i + 1].getType())) ? "," : "");
-                }else{
+                } else {
                     stringBuilder.append(serialize(fieldValue));
                 }
             }
@@ -111,17 +110,14 @@ public class JSONSerializer implements Serializer {
     }
 
     private boolean isSupported(Class<?> type) {
-
         return SUPPORTED_TYPES.contains(type);
     }
 
     public Set<Class<?>> getMarkedClassesInClassPath(String classPath) {
-
         return Classes.find(classPath);
     }
 
     public Set<Class<?>> getMarkedClassesInPackage(String packageName) {
-
         return Classes.find(packageName);
     }
 
