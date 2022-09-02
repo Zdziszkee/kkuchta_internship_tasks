@@ -23,12 +23,13 @@ public class UserService implements Service<User, String> {
             return user;
         }
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users;");
-            final ResultSet result = preparedStatement.executeQuery();
-            final String username = result.getString(1);
-            final User found = new User(id, username);
-            cache.put(id, found);
-            return found;
+            try (final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users;")) {
+                final ResultSet result = preparedStatement.executeQuery();
+                final String username = result.getString(1);
+                final User found = new User(id, username);
+                cache.put(id, found);
+                return found;
+            }
         }
         catch (SQLException e) {
             throw new IllegalStateException("Could not find user with id" + id, e);
@@ -38,12 +39,13 @@ public class UserService implements Service<User, String> {
     @Override
     public void delete(final String id) {
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id=?;");
-            preparedStatement.setString(1, id);
-            final boolean result = preparedStatement.execute();
-            preparedStatement.close();
-            if (result) {
-                cache.remove(id);
+            try (final PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM users WHERE id=?;")) {
+                preparedStatement.setString(1, id);
+                final boolean result = preparedStatement.execute();
+                preparedStatement.close();
+                if (result) {
+                    cache.remove(id);
+                }
             }
         }
         catch (SQLException e) {
@@ -53,10 +55,11 @@ public class UserService implements Service<User, String> {
 
     public void deleteThroughStatement(final String id) {
         try {
-            final Statement statement = connection.createStatement();
-            final boolean result = statement.execute("DELETE FROM users WHERE id=" + id + ";");
-            if (result) {
-                cache.remove(id);
+            try (final Statement statement = connection.createStatement()) {
+                final boolean result = statement.execute("DELETE FROM users WHERE id=" + id + ";");
+                if (result) {
+                    cache.remove(id);
+                }
             }
         }
         catch (SQLException e) {
@@ -67,11 +70,13 @@ public class UserService implements Service<User, String> {
     @Override
     public void save(final User user) {
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (id,username) VALUES(?,?);");
-            preparedStatement.setString(1, user.getId());
-            preparedStatement.setString(2, user.getUsername());
-            preparedStatement.execute();
-            cache.put(user.getId(), user);
+            try (final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (id,username) VALUES(?,?);")) {
+                ;
+                preparedStatement.setString(1, user.getId());
+                preparedStatement.setString(2, user.getUsername());
+                preparedStatement.execute();
+                cache.put(user.getId(), user);
+            }
         }
         catch (SQLException e) {
             throw new IllegalStateException("Could not save " + user, e);
@@ -81,11 +86,13 @@ public class UserService implements Service<User, String> {
     @Override
     public void update(final String id, final User user) {
         try {
-            final PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE users SET id = " + user.getId() + ",username = " + user.getUsername() + " WHERE id = " + id + ";");
-            preparedStatement.execute();
-            cache.remove(id);
-            cache.put(user.getId(), user);
+            try (final PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE users SET id = " + user.getId() + ",username = " + user.getUsername() + " WHERE id = " + id + ";")) {
+                ;
+                preparedStatement.execute();
+                cache.remove(id);
+                cache.put(user.getId(), user);
+            }
         }
         catch (SQLException e) {
             throw new IllegalStateException("Could not update " + user, e);
