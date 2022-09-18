@@ -1,6 +1,7 @@
-package com.griddynamics.sql.base;
+package com.griddynamics.sql.model;
 
 public class User {
+
     private final String id;
 
     public String getId() {

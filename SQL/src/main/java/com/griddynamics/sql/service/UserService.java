@@ -1,6 +1,6 @@
 package com.griddynamics.sql.service;
 
-import com.griddynamics.sql.base.User;
+import com.griddynamics.sql.model.User;
 
 import java.sql.*;
 import java.util.Map;
@@ -23,11 +23,12 @@ public class UserService implements Service<User, String> {
             return user;
         }
         try {
-            try (final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users;")) {
+            try (final PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id=?;")) {
                 final ResultSet result = preparedStatement.executeQuery();
-                final String username = result.getString(1);
-                final User found = new User(id, username);
-                cache.put(id, found);
+                final String userId = result.getString(1);
+                final String username = result.getString(2);
+                final User found = new User(userId, username);
+                cache.put(userId, found);
                 return found;
             }
         }
@@ -71,7 +72,6 @@ public class UserService implements Service<User, String> {
     public void save(final User user) {
         try {
             try (final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users (id,username) VALUES(?,?);")) {
-                ;
                 preparedStatement.setString(1, user.getId());
                 preparedStatement.setString(2, user.getUsername());
                 preparedStatement.execute();
@@ -87,8 +87,7 @@ public class UserService implements Service<User, String> {
     public void update(final String id, final User user) {
         try {
             try (final PreparedStatement preparedStatement = connection.prepareStatement(
-                    "UPDATE users SET id = " + user.getId() + ",username = " + user.getUsername() + " WHERE id = " + id + ";")) {
-                ;
+                    "UPDATE users SET username = " + user.getUsername() + " WHERE id = " + id + ";")) {
                 preparedStatement.execute();
                 cache.remove(id);
                 cache.put(user.getId(), user);
