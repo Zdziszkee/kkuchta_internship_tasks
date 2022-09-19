@@ -1,7 +1,7 @@
 package com.griddynamics.sqlutility.service;
 
 import com.griddynamics.sqlutility.base.Database;
-import com.griddynamics.sqlutility.data.Movie;
+import com.griddynamics.sqlutility.model.Movie;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

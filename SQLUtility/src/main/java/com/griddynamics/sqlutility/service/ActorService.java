@@ -1,7 +1,7 @@
 package com.griddynamics.sqlutility.service;
 
 import com.griddynamics.sqlutility.base.Database;
-import com.griddynamics.sqlutility.data.Actor;
+import com.griddynamics.sqlutility.model.Actor;
 
 import java.sql.SQLException;
 import java.util.List;

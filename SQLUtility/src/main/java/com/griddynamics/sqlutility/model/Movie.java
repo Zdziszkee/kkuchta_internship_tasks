@@ -1,4 +1,4 @@
-package com.griddynamics.sqlutility.data;
+package com.griddynamics.sqlutility.model;
 
 import java.time.LocalDate;
 import java.util.List;

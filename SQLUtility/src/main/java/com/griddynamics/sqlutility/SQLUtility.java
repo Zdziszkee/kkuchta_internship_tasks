@@ -1,7 +1,6 @@
 package com.griddynamics.sqlutility;
 
 import com.griddynamics.sqlutility.base.Database;
-import com.griddynamics.sqlutility.data.Actor;
 import org.sqlite.SQLiteConfig;
 import org.sqlite.SQLiteDataSource;
 
@@ -11,12 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class SQLUtility {
 
@@ -31,7 +25,6 @@ public class SQLUtility {
             final Path path = Paths.get(databasePath);
             if (!Files.exists(path)) {
                 Files.createFile(path);
-
             }
         }
         catch (IOException e) {
@@ -50,11 +43,6 @@ public class SQLUtility {
                 database.execute("delete from movies;");
                 database.execute("delete from actors;");
                 database.execute("delete from movie_actors;");
-                final List<Actor> actors = new ArrayList<>();
-                for (int i = 0; i < 100; i++) {
-                    final List<Integer> movieIds = Stream.generate(() -> ThreadLocalRandom.current().nextInt(0, 101)).limit(10).collect(Collectors.toList());
-                    actors.add(new Actor("actor" + i, i, movieIds));
-                }
             }
         }
         catch (SQLException e) {
