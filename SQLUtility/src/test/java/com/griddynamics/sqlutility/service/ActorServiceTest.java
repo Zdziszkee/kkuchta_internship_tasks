@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,6 +15,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class ActorServiceTest {
 
@@ -23,9 +23,7 @@ class ActorServiceTest {
 
     private final static int EXPECTED_ID = 1;
 
-    private final static List<Integer> EXPECTED_MOVIES = List.of(1, 2, 3);
-
-    private final static Actor EXPECTED_ACTOR = new Actor(EXPECTED_NAME, EXPECTED_ID, EXPECTED_MOVIES);
+    private final static Actor EXPECTED_ACTOR = new Actor(EXPECTED_ID, EXPECTED_NAME);
 
     final Database mock = mock(Database.class);
 
@@ -38,11 +36,9 @@ class ActorServiceTest {
 
     @Test
     void findById() {
-        given(mock.findOne(eq("SELECT * FROM actors WHERE actorId = ?;"), any(Function.class), eq(EXPECTED_ID))).willReturn(
-                Optional.of(EXPECTED_ACTOR));
-        given(mock.findMany(eq("SELECT movieId FROM movie_actors JOIN movies ON movies.movieId = movie_actors.movieId WHERE actorId = ?;"),
-                any(Function.class), eq(EXPECTED_ID))).willReturn(EXPECTED_MOVIES);
+        given(mock.findOne(eq("SELECT * FROM actors WHERE actorId = ?;"), any(), eq(EXPECTED_ID))).willReturn(Optional.of(EXPECTED_ACTOR));
         final Optional<Actor> optionalActor = actorService.findById(EXPECTED_ID);
+        verify(mock).findOne(eq("SELECT * FROM actors WHERE actorId = ?;"), any(), eq(EXPECTED_ID));
         assertTrue(optionalActor.isPresent());
         assertEquals(optionalActor.get(), EXPECTED_ACTOR);
     }
@@ -50,13 +46,12 @@ class ActorServiceTest {
     @Test
     void save() {
         final Optional<Actor> optionalActor = actorService.save(EXPECTED_ACTOR);
-        EXPECTED_MOVIES.forEach(movieId -> then(mock).should().execute("INSERT INTO movie_actors VALUES(?,?)", EXPECTED_ID, movieId));
-        then(mock).should().execute("INSERT INTO actors VALUES(?,?)", EXPECTED_ID, EXPECTED_NAME);
+        then(mock).should().execute("INSERT INTO actors VALUES(?,?);", EXPECTED_ID, EXPECTED_NAME);
     }
 
     @Test
     void findAll() {
-        given(mock.findMany(eq("SELECT * FROM actors"), any(Function.class))).willReturn(List.of(EXPECTED_ACTOR));
+        given(mock.findMany(eq("SELECT * FROM actors;"), any())).willReturn(List.of(EXPECTED_ACTOR));
     }
 
 }

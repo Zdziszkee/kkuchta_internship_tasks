@@ -28,9 +28,8 @@ class MovieServiceTest {
 
     private final static int EXPECTED_INCOME = 1000;
 
-    private final static List<Integer> EXPECTED_ACTORS = List.of(1, 2, 3);
 
-    private final static Movie EXPECTED_MOVIE = new Movie(EXPECTED_ID, EXPECTED_DATE, EXPECTED_NAME, EXPECTED_INCOME, EXPECTED_ACTORS);
+    private final static Movie EXPECTED_MOVIE = new Movie(EXPECTED_ID, EXPECTED_DATE, EXPECTED_NAME, EXPECTED_INCOME);
 
     private final Database mock = mock(Database.class);
 
@@ -43,10 +42,7 @@ class MovieServiceTest {
 
     @Test
     void findById() {
-        given(mock.findOne(eq("SELECT * FROM movies WHERE movieId = ?;"), any(Function.class), eq(EXPECTED_ID))).willReturn(
-                Optional.of(EXPECTED_MOVIE));
-        given(mock.findMany(eq("SELECT actorId FROM movie_actors JOIN actors ON actors.actorId = movie_actors.actorId WHERE movieId = ?;"),
-                any(Function.class), eq(EXPECTED_ID))).willReturn(EXPECTED_ACTORS);
+        given(mock.findOne(eq("SELECT * FROM movies WHERE movieId = ?;"), any(), eq(EXPECTED_ID))).willReturn(Optional.of(EXPECTED_MOVIE));
         final Optional<Movie> optionalMovie = movieService.findById(EXPECTED_ID);
         assertTrue(optionalMovie.isPresent());
         assertEquals(optionalMovie.get(), EXPECTED_MOVIE);
@@ -55,13 +51,12 @@ class MovieServiceTest {
     @Test
     void save() {
         final Optional<Movie> optionalMovie = movieService.save(EXPECTED_MOVIE);
-        EXPECTED_ACTORS.forEach(actorId -> then(mock).should().execute("INSERT INTO movie_actors VALUES(?,?)", actorId, EXPECTED_ID));
-        then(mock).should().execute("INSERT INTO movies VALUES(?,?)", EXPECTED_ID, EXPECTED_NAME);
+        then(mock).should().execute("INSERT INTO movies VALUES(?,?);", EXPECTED_ID, EXPECTED_NAME);
     }
 
     @Test
     void findAll() {
-        given(mock.findMany(eq("SELECT * FROM actors"), any(Function.class))).willReturn(List.of(EXPECTED_MOVIE));
+        given(mock.findMany(eq("SELECT * FROM actors;"), any())).willReturn(List.of(EXPECTED_MOVIE));
     }
 
 }
