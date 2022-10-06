@@ -1,7 +1,7 @@
 package com.griddynamics.sqlutility.service;
 
 import com.griddynamics.sqlutility.base.Database;
-import com.griddynamics.sqlutility.model.Movie;
+import com.griddynamics.sqlutility.data.Movie;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -26,12 +26,21 @@ public class MovieService implements Service<Movie, Integer> {
         if (movie != null) {
             return Optional.of(movie);
         }
-        database.findOne("SELECT * FROM movies WHERE movieId = ?;", (resultSet -> {
+        final List<Integer> actorIds = database.findMany(
+                "SELECT actorId FROM movie_actors JOIN actors ON actors.actorId = movie_actors.actorId WHERE movieId = ?", (resultSet -> {
+                    try {
+                        return resultSet.getInt(1);
+                    }
+                    catch (SQLException e) {
+                        throw new RuntimeException("the columnIndex is not valid is or this method is called on a closed result set");
+                    }
+                }), id);
+        database.findOne("SELECT * FROM movies WHERE movieId = ?", (resultSet -> {
             try {
                 final String name = resultSet.getString(2);
                 final String released = resultSet.getString(3);
                 final long income = resultSet.getLong(4);
-                return new Movie(id, LocalDate.parse(released), name, income);
+                return new Movie(id, LocalDate.parse(released), name, income, actorIds);
             }
             catch (SQLException e) {
                 throw new RuntimeException("the columnIndex is not valid is or this method is called on a closed result set");
@@ -42,20 +51,31 @@ public class MovieService implements Service<Movie, Integer> {
 
     @Override
     public Optional<Movie> save(final Movie type) {
-        database.execute("INSERT INTO movies VALUES(?,?,?,?);", type.id(), type.name(), type.released(), type.income());
-        cache.put(type.id(), type);
+        type.actorsIds().forEach(actorId -> {
+            database.execute("INSERT INTO movie_actors VALUES(?,?)", actorId, type.id());
+        });
+        database.execute("INSERT INTO movies VALUES(?,?,?,?)", type.id(), type.name(), type.released(), type.income());
         return Optional.of(type);
     }
 
     @Override
     public List<Movie> findAll() {
-        return database.findMany("SELECT * FROM movies;", (resultSet -> {
+        return database.findMany("SELECT * FROM movies", (resultSet -> {
             try {
                 final int id = resultSet.getInt(1);
                 final String name = resultSet.getString(2);
                 final String released = resultSet.getString(3);
                 final long income = resultSet.getLong(4);
-                return new Movie(id, LocalDate.parse(released), name, income);
+                final List<Integer> actorIds = database.findMany(
+                        "SELECT actorId FROM movie_actors JOIN actors ON actors.actorId = movie_actors.actorId WHERE movieId = ?", (resultSet2 -> {
+                            try {
+                                return resultSet2.getInt(1);
+                            }
+                            catch (SQLException e) {
+                                throw new RuntimeException("the columnIndex is not valid is or this method is called on a closed result set");
+                            }
+                        }), id);
+                return new Movie(id, LocalDate.parse(released), name, income, actorIds);
             }
             catch (SQLException e) {
                 throw new RuntimeException("the columnIndex is not valid is or this method is called on a closed result set");

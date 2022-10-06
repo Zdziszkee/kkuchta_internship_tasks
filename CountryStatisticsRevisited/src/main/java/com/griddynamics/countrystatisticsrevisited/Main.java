@@ -1,4 +1,4 @@
-package com.griddynamics.sql;
+package com.griddynamics.countrystatisticsrevisited;
 
 public class Main {
 
